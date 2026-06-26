@@ -1,4 +1,4 @@
-window.API_URL = "https://script.google.com/macros/s/EXEC_ID_DO_APPS_SCRIPT/exec";
+window.API_URL = "https://script.google.com/macros/s/AKfycbxJRA83LVclYav2ojhHWzZgxRkReBduOcG6yp5Y-7V1UJxobW6fefR5iRSniXCjldY0/exec";
 
 const AuthSystem = {
   init() {
