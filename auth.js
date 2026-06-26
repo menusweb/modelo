@@ -3,6 +3,7 @@ window.API_URL = "https://script.google.com/macros/s/AKfycbxJRA83LVclYav2ojhHWzZ
 const AuthSystem = {
   init() {
     this.checkLoginCache();
+    this.setupAvatarListener();
   },
 
   getCurrentUser() {
@@ -20,6 +21,29 @@ const AuthSystem = {
     } else {
       avatarEl.textContent = "?";
     }
+  },
+
+  // Vincula o evento de clique no ícone do avatar
+  setupAvatarListener() {
+    const avatarEl = document.getElementById("user-avatar");
+    if (!avatarEl) return;
+
+    avatarEl.addEventListener("click", () => {
+      const user = this.getCurrentUser();
+      
+      if (user) {
+        // Se já estiver logado, exibe opção para sair
+        const sair = confirm(`Você está logado como ${user.user}.\nDeseja sair da conta?`);
+        if (sair) {
+          this.logout();
+          alert("Você saiu da conta com sucesso.");
+        }
+      } else {
+        // Se não estiver logado, abre a tela de login (que agora contém o botão de registrar)
+        // Passamos 'null' para que o sistema saiba que não estamos num fluxo de checkout
+        this.showLoginForm(null);
+      }
+    });
   },
 
   async getIPAddress() {
@@ -69,7 +93,6 @@ const AuthSystem = {
       onProceedWithCheckout(user.user, user.address, false);
       return;
     }
-
     this.showAuthModal(onProceedWithCheckout);
   },
 
@@ -87,20 +110,20 @@ const AuthSystem = {
     container.appendChild(title);
 
     const btnLogin = document.createElement("button");
-    btnLogin.textContent = "Entrar na conta existente";
+    btnLogin.textContent = "Entrar ou Registrar-se";
     btnLogin.style = "width:100%;padding:12px;margin-bottom:10px;background:#007bff;color:#fff;border:none;border-radius:4px;cursor:pointer;font-weight:bold;";
-    
-    const btnRegister = document.createElement("button");
-    btnRegister.textContent = "Registrar-se";
-    btnRegister.style = "width:100%;padding:12px;margin-bottom:10px;background:#28a745;color:#fff;border:none;border-radius:4px;cursor:pointer;font-weight:bold;";
 
     const btnGuest = document.createElement("button");
     btnGuest.textContent = "Continuar sem login";
     btnGuest.style = "width:100%;padding:12px;background:#6c757d;color:#fff;border:none;border-radius:4px;cursor:pointer;font-weight:bold;";
 
+    const btnCancel = document.createElement("button");
+    btnCancel.textContent = "Cancelar Pedido";
+    btnCancel.style = "width:100%;padding:12px;margin-top:10px;background:#ccc;color:#333;border:none;border-radius:4px;cursor:pointer;font-weight:bold;";
+
     container.appendChild(btnLogin);
-    container.appendChild(btnRegister);
     container.appendChild(btnGuest);
+    container.appendChild(btnCancel);
     modal.appendChild(container);
     document.body.appendChild(modal);
 
@@ -109,15 +132,14 @@ const AuthSystem = {
       this.showLoginForm(onProceedWithCheckout);
     };
 
-    btnRegister.onclick = () => {
-      document.body.removeChild(modal);
-      this.showRegisterForm(onProceedWithCheckout);
-    };
-
     btnGuest.onclick = async () => {
       document.body.removeChild(modal);
       const ip = await this.getIPAddress();
       onProceedWithCheckout(ip, "", true);
+    };
+
+    btnCancel.onclick = () => {
+      document.body.removeChild(modal);
     };
   },
 
@@ -126,7 +148,10 @@ const AuthSystem = {
     modal.style = "position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);display:flex;justify-content:center;align-items:center;z-index:9999;";
 
     const container = document.createElement("div");
-    container.style = "background:#fff;padding:25px;border-radius:8px;max-width:360px;width:90%;box-shadow:0 4px 12px rgba(0,0,0,0.15);";
+    container.style = "background:#fff;padding:25px;border-radius:8px;max-width:360px;width:90%;box-shadow:0 4px 12px rgba(0,0,0,0.15);font-family:sans-serif;";
+
+    // Definimos os botões baseados em estarmos no fluxo de checkout ou não
+    const btnCancelText = onProceedWithCheckout ? "Voltar ao Carrinho" : "Fechar";
 
     container.innerHTML = `
       <h3 style="margin-top:0;text-align:center;">Entrar na Conta</h3>
@@ -139,8 +164,16 @@ const AuthSystem = {
         <input type="password" id="login-psswd" style="width:100%;padding:8px;box-sizing:border-box;">
       </div>
       <div id="login-err" style="color:red;font-size:13px;margin-bottom:10px;display:none;"></div>
-      <button id="btn-do-login" style="width:100%;padding:10px;background:#007bff;color:#fff;border:none;border-radius:4px;cursor:pointer;font-weight:bold;">Entrar</button>
-      <button id="btn-cancel-login" style="width:100%;padding:10px;background:#ccc;color:#333;border:none;border-radius:4px;cursor:pointer;margin-top:8px;">Voltar</button>
+      
+      <button id="btn-do-login" style="width:100%;padding:10px;background:#007bff;color:#fff;border:none;border-radius:4px;cursor:pointer;font-weight:bold;margin-bottom:15px;">Entrar</button>
+      
+      <div style="border-top: 1px solid #ddd; margin: 15px 0; position: relative;">
+        <span style="position: absolute; top: -10px; left: 50%; transform: translateX(-50%); background: #fff; padding: 0 10px; font-size: 13px; color: #666;">Novo por aqui?</span>
+      </div>
+      
+      <button id="btn-go-register" style="width:100%;padding:10px;background:#28a745;color:#fff;border:none;border-radius:4px;cursor:pointer;font-weight:bold;">Criar Conta</button>
+      
+      <button id="btn-cancel-login" style="width:100%;padding:10px;background:#ccc;color:#333;border:none;border-radius:4px;cursor:pointer;margin-top:15px;">${btnCancelText}</button>
     `;
 
     modal.appendChild(container);
@@ -148,7 +181,16 @@ const AuthSystem = {
 
     document.getElementById("btn-cancel-login").onclick = () => {
       document.body.removeChild(modal);
-      this.showAuthModal(onProceedWithCheckout);
+      // Se veio do checkout, volta para o modal inicial de Guest/Login
+      if (onProceedWithCheckout) {
+        this.showAuthModal(onProceedWithCheckout);
+      }
+    };
+
+    // Botão para registrar conta (Chama o formulário de registro)
+    document.getElementById("btn-go-register").onclick = () => {
+      document.body.removeChild(modal);
+      this.showRegisterForm(onProceedWithCheckout);
     };
 
     document.getElementById("btn-do-login").onclick = async () => {
@@ -162,6 +204,11 @@ const AuthSystem = {
         return;
       }
 
+      // UX: Desativa botão e mostra carregamento
+      const btn = document.getElementById("btn-do-login");
+      btn.textContent = "Aguarde...";
+      btn.disabled = true;
+
       try {
         const response = await fetch(window.API_URL, {
           method: "POST",
@@ -173,14 +220,23 @@ const AuthSystem = {
           localStorage.setItem("menu_user_session", JSON.stringify(result.user));
           this.checkLoginCache();
           document.body.removeChild(modal);
-          onProceedWithCheckout(result.user.user, result.user.address, false);
+          
+          if (onProceedWithCheckout) {
+            onProceedWithCheckout(result.user.user, result.user.address, false);
+          } else {
+            alert("Login realizado com sucesso!");
+          }
         } else {
           errEl.textContent = result.message || "Erro ao fazer login.";
           errEl.style.display = "block";
+          btn.textContent = "Entrar";
+          btn.disabled = false;
         }
       } catch (e) {
         errEl.textContent = "Erro de conexão.";
         errEl.style.display = "block";
+        btn.textContent = "Entrar";
+        btn.disabled = false;
       }
     };
   },
@@ -190,12 +246,12 @@ const AuthSystem = {
     modal.style = "position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);display:flex;justify-content:center;align-items:center;z-index:9999;overflow-y:auto;";
 
     const container = document.createElement("div");
-    container.style = "background:#fff;padding:25px;border-radius:8px;max-width:450px;width:90%;margin:20px auto;box-shadow:0 4px 12px rgba(0,0,0,0.15);font-family:sans-serif;";
+    container.style = "background:#fff;padding:25px;border-radius:8px;max-width:450px;width:90%;margin:20px auto;max-height:90vh;overflow-y:auto;box-shadow:0 4px 12px rgba(0,0,0,0.15);font-family:sans-serif;";
 
     container.innerHTML = `
       <h3 style="margin-top:0;text-align:center;">Criar Conta</h3>
       <div style="margin-bottom:10px;"><label style="font-size:13px;display:block;">Nome de Usuário</label><input type="text" id="reg-user" style="width:100%;padding:6px;box-sizing:border-box;"></div>
-      <div style="margin-bottom:10px;"><label style="font-size:13px;display:block;">WhatsApp</label><input type="text" id="reg-whatsapp" style="width:100%;padding:6px;box-sizing:border-box;"></div>
+      <div style="margin-bottom:10px;"><label style="font-size:13px;display:block;">WhatsApp</label><input type="text" id="reg-whatsapp" style="width:100%;padding:6px;box-sizing:border-box;" placeholder="(11) 90000-0000"></div>
       <div style="margin-bottom:10px;"><label style="font-size:13px;display:block;">E-mail</label><input type="email" id="reg-email" style="width:100%;padding:6px;box-sizing:border-box;"></div>
       
       <h4 style="margin:10px 0 5px 0;font-size:14px;border-bottom:1px solid #eee;padding-bottom:3px;">Endereço</h4>
@@ -203,15 +259,16 @@ const AuthSystem = {
       <div style="margin-bottom:6px;"><label style="font-size:12px;display:block;">Número</label><input type="text" id="reg-numero" style="width:100%;padding:6px;box-sizing:border-box;"></div>
       <div style="margin-bottom:6px;"><label style="font-size:12px;display:block;">Bairro</label><input type="text" id="reg-bairro" style="width:100%;padding:6px;box-sizing:border-box;"></div>
       <div style="margin-bottom:6px;"><label style="font-size:12px;display:block;">Cidade</label><input type="text" id="reg-cidade" style="width:100%;padding:6px;box-sizing:border-box;"></div>
-      <div style="margin-bottom:10px;"><label style="font-size:12px;display:block;">UF</label><input type="text" id="reg-uf" style="width:100%;padding:6px;box-sizing:border-box;" maxlength="2"></div>
+      <div style="margin-bottom:10px;"><label style="font-size:12px;display:block;">UF</label><input type="text" id="reg-uf" style="width:100%;padding:6px;box-sizing:border-box;" maxlength="2" placeholder="Ex: SP"></div>
       
       <h4 style="margin:10px 0 5px 0;font-size:14px;border-bottom:1px solid #eee;padding-bottom:3px;">Segurança</h4>
       <div style="margin-bottom:10px;"><label style="font-size:13px;display:block;">Senha</label><input type="password" id="reg-psswd" style="width:100%;padding:6px;box-sizing:border-box;"></div>
       <div style="margin-bottom:12px;"><label style="font-size:13px;display:block;">Confirmar Senha</label><input type="password" id="reg-psswd-conf" style="width:100%;padding:6px;box-sizing:border-box;"></div>
       
       <div id="reg-err" style="color:red;font-size:13px;margin-bottom:10px;display:none;"></div>
-      <button id="btn-do-register" style="width:100%;padding:10px;background:#28a745;color:#fff;border:none;border-radius:4px;cursor:pointer;font-weight:bold;">Registrar e Continuar</button>
-      <button id="btn-cancel-reg" style="width:100%;padding:10px;background:#ccc;color:#333;border:none;border-radius:4px;cursor:pointer;margin-top:8px;">Voltar</button>
+      
+      <button id="btn-do-register" style="width:100%;padding:10px;background:#28a745;color:#fff;border:none;border-radius:4px;cursor:pointer;font-weight:bold;">Confirmar Cadastro</button>
+      <button id="btn-cancel-reg" style="width:100%;padding:10px;background:#ccc;color:#333;border:none;border-radius:4px;cursor:pointer;margin-top:8px;">Voltar ao Login</button>
     `;
 
     modal.appendChild(container);
@@ -219,7 +276,8 @@ const AuthSystem = {
 
     document.getElementById("btn-cancel-reg").onclick = () => {
       document.body.removeChild(modal);
-      this.showAuthModal(onProceedWithCheckout);
+      // Sempre volta para a tela de Login independentemente se é fluxo aberto ou fechado
+      this.showLoginForm(onProceedWithCheckout);
     };
 
     document.getElementById("btn-do-register").onclick = async () => {
@@ -250,6 +308,11 @@ const AuthSystem = {
         return;
       }
 
+      // UX: Desativa botão e mostra carregamento
+      const btn = document.getElementById("btn-do-register");
+      btn.textContent = "Criando conta...";
+      btn.disabled = true;
+
       errEl.style.display = "none";
       const fullAddress = this.formatAddress(rua, numero, bairro, cidade, uf);
       const localString = await this.getLocation();
@@ -278,14 +341,23 @@ const AuthSystem = {
           localStorage.setItem("menu_user_session", JSON.stringify(sessionUser));
           this.checkLoginCache();
           document.body.removeChild(modal);
-          onProceedWithCheckout(user, fullAddress, false);
+          
+          if (onProceedWithCheckout) {
+            onProceedWithCheckout(user, fullAddress, false);
+          } else {
+            alert("Conta criada e login realizado com sucesso!");
+          }
         } else {
           errEl.textContent = result.message || "Erro no registro.";
           errEl.style.display = "block";
+          btn.textContent = "Confirmar Cadastro";
+          btn.disabled = false;
         }
       } catch (e) {
         errEl.textContent = "Erro de conexão com o servidor.";
         errEl.style.display = "block";
+        btn.textContent = "Confirmar Cadastro";
+        btn.disabled = false;
       }
     };
   },
