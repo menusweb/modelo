@@ -195,3 +195,85 @@ button.outline-sm { background: transparent; border: 1px solid var(--mainColor);
 #global-loader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.8); z-index: 10000; display: flex; justify-content: center; align-items: center; }
 .spinner { width: 40px; height: 40px; border: 4px solid #ddd; border-top-color: var(--mainColor); border-radius: 50%; animation: spin 1s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
+
+/* =========================================
+   LAYOUT DESKTOP (OVERRIDES)
+   ========================================= */
+@media (min-width: 768px) {
+    #app-container {
+        max-width: 1200px;
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+    
+    #main-header {
+        max-width: 1200px;
+        padding: 0 30px;
+    }
+    
+    .fixed-bottom-bar {
+        max-width: 1200px;
+        flex-direction: row;
+        justify-content: center;
+        gap: 20px;
+    }
+    
+    .fixed-bottom-bar button {
+        width: auto;
+        min-width: 250px;
+    }
+
+    #home-category-bar {
+        justify-content: center;
+        flex-wrap: wrap;
+        overflow-x: visible;
+    }
+    
+    .cat-pill {
+        margin-bottom: 10px;
+    }
+
+    /* Transformando a listagem em Grid no Desktop */
+    .view-page {
+        text-align: center;
+    }
+    
+    .view-page > * {
+        text-align: left;
+    }
+
+    .prod-card {
+        display: inline-flex;
+        width: calc(50% - 20px);
+        margin: 10px;
+        vertical-align: top;
+    }
+
+    .cart-item {
+        display: inline-flex;
+        width: calc(50% - 20px);
+        margin: 10px;
+        vertical-align: top;
+    }
+
+    /* Centralização de blocos grandes */
+    .checkout-section, .cart-summary, .prod-details, .prod-section {
+        max-width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    #prod-img-container img {
+        height: 400px;
+        max-width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+    }
+}
+
+@media (min-width: 1024px) {
+    .prod-card {
+        width: calc(33.333% - 20px);
+    }
+}
