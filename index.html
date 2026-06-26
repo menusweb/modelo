@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Cardápio Digital</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <script>
+        // Constantes de Configuração da Loja
+        window.STORE_NAME = "Ponto Burger";
+        window.STORE_LOCAL = "Rua das Flores, 123, Centro, Cidade - UF";
+        window.SHIPPING_TYPE = "Todos"; // Delivery, Retirada, Consumir no local
+        window.WORKING_TIME = "18:00 às 23:30";
+        window.INSTAGRAM = "@pontoburger";
+        window.WHATSAPP = "5511999999999";
+        
+        // Taxas e Fretes
+        window.FRETE_1 = 5.00;
+        window.FRETE_2 = 8.00;
+        window.FRETE_3 = 12.00;
+        window.FRETE_4 = 15.00;
+        window.ESPECIAIS_PRICE = 3.00; // Valor de cada adicional especial
+
+        // InfinitePay
+        window.INFINITE_TAG = "seunomedeusuario";
+        window.SITE_URL = "https://seusite.github.io";
+
+        // Variável de controle de rotas simples
+        window.App = {
+            navigate: (viewId) => {
+                document.querySelectorAll('.view-page').forEach(el => el.classList.remove('active'));
+                document.getElementById(viewId).classList.add('active');
+                window.scrollTo(0, 0);
+            }
+        };
+    </script>
+</head>
+<body>
+    <header id="main-header">
+        <button id="btn-menu" onclick="MenuConfig.toggle()"><i class="fas fa-bars"></i></button>
+        <div id="header-brand"></div>
+        <div class="header-actions">
+            <button id="btn-cart" onclick="window.App.navigate('cart-view'); CartSys.renderCart();">
+                <i class="fas fa-shopping-cart"></i>
+                <span id="cart-badge">0</span>
+            </button>
+            <div id="user-avatar" onclick="ProfileSys.openProfile()">?</div>
+        </div>
+    </header>
+
+    <div id="sidebar-overlay" onclick="MenuConfig.toggle()"></div>
+    <nav id="sidebar-menu">
+        <button id="close-menu" onclick="MenuConfig.toggle()"><i class="fas fa-times"></i></button>
+        <div class="sidebar-header">
+            <img id="sidebar-logo" src="" alt="Logo">
+            <h2 id="sidebar-storename"></h2>
+            <p id="sidebar-slogan"></p>
+        </div>
+        <div id="sidebar-categories"></div>
+        <div class="sidebar-info">
+            <h3>Informações</h3>
+            <p><i class="fas fa-map-marker-alt"></i> <span id="info-local"></span></p>
+            <p><i class="fas fa-motorcycle"></i> <span id="info-shipping"></span></p>
+            <p><i class="fas fa-clock"></i> <span id="info-time"></span></p>
+            <p><i class="fab fa-instagram"></i> <span id="info-insta"></span></p>
+            <p><i class="fab fa-whatsapp"></i> <span id="info-whats"></span></p>
+        </div>
+        <div class="sidebar-user" onclick="ProfileSys.openProfile()">
+            <div id="sidebar-avatar">?</div>
+            <div class="sidebar-user-info">
+                <span id="sidebar-username">Visitante</span>
+                <small>Ver meu perfil</small>
+            </div>
+            <i class="fas fa-chevron-right"></i>
+        </div>
+    </nav>
+
+    <main id="app-container">
+        
+        <div id="home-view" class="view-page active">
+            <div class="home-hero">
+                <img id="home-logo" src="" alt="Logo">
+                <h1 id="home-storename"></h1>
+                <p id="home-slogan"></p>
+            </div>
+            <div id="home-category-bar"></div>
+            <div id="home-product-grid"></div>
+        </div>
+
+        <div id="product-view" class="view-page">
+            <button class="back-btn" onclick="window.App.navigate('home-view')"><i class="fas fa-arrow-left"></i></button>
+            <div id="prod-img-container"></div>
+            <div class="prod-details">
+                <h2 id="prod-title"></h2>
+                <h3 id="prod-price"></h3>
+                <p id="prod-desc"></p>
+            </div>
+            <div id="prod-ingredients-container"></div>
+            
+            <div class="prod-section">
+                <h4><i class="fas fa-ruler-vertical"></i> Quantidade</h4>
+                <div class="qty-control">
+                    <button onclick="ProductSys.changeQty(-1)"><i class="fas fa-minus"></i></button>
+                    <span id="prod-qty">1</span>
+                    <button onclick="ProductSys.changeQty(1)"><i class="fas fa-plus"></i></button>
+                </div>
+            </div>
+
+            <div class="prod-section">
+                <h4><i class="fas fa-comment-alt"></i> Observação (opcional)</h4>
+                <textarea id="prod-obs" placeholder="Ex.: Sem cebola, ponto da carne..." maxlength="600"></textarea>
+                <div class="char-count"><span id="obs-count">0</span>/100 palavras</div>
+            </div>
+
+            <div class="fixed-bottom-bar">
+                <button id="btn-add-cart" onclick="ProductSys.addToCart()">Adicionar ao carrinho</button>
+                <button id="btn-buy-now" class="outline" onclick="ProductSys.buyNow()">Finalizar pedido</button>
+            </div>
+        </div>
+
+        <div id="cart-view" class="view-page">
+            <button class="back-btn" onclick="window.App.navigate('home-view')"><i class="fas fa-arrow-left"></i></button>
+            <h2 class="page-title">Carrinho</h2>
+            <div id="cart-items-container"></div>
+            <div class="cart-summary">
+                <div class="summary-line"><span>Subtotal:</span> <span id="cart-subtotal">R$ 0,00</span></div>
+                <div class="summary-line"><span>Adicionais:</span> <span id="cart-extras">R$ 0,00</span></div>
+                <div class="summary-line total"><span>Total:</span> <span id="cart-total">R$ 0,00</span></div>
+            </div>
+            <div class="fixed-bottom-bar">
+                <button onclick="window.App.navigate('checkout-view'); CheckoutSys.init();">Continuar para Pagamento</button>
+            </div>
+        </div>
+
+        <div id="checkout-view" class="view-page">
+            <button class="back-btn" onclick="window.App.navigate('cart-view')"><i class="fas fa-arrow-left"></i></button>
+            <h2 class="page-title">Finalizar Pedido</h2>
+            
+            <div class="checkout-section" id="checkout-form">
+                <h4>Endereço de Entrega</h4>
+                <button id="btn-get-location" class="outline-sm" onclick="CheckoutSys.getLocation()"><i class="fas fa-map-marker-alt"></i> Usar minha localização</button>
+                <input type="text" id="chk-rua" placeholder="Rua">
+                <input type="text" id="chk-numero" placeholder="Número">
+                <input type="text" id="chk-bairro" placeholder="Bairro">
+                <input type="text" id="chk-cidade" placeholder="Cidade">
+                <input type="text" id="chk-uf" placeholder="UF" maxlength="2">
+
+                <h4>Opções de Recebimento</h4>
+                <select id="chk-shipping" onchange="CheckoutSys.calcFreight()">
+                    <option value="delivery">Entrega (Delivery)</option>
+                    <option value="retirada">Retirada no Local</option>
+                </select>
+
+                <div id="freight-selector-container">
+                    <h4>Selecione seu Bairro (Frete)</h4>
+                    <select id="chk-freight" onchange="CheckoutSys.calcFreight()">
+                        <option value="0">Selecionar...</option>
+                        <option value="frete1">Região 1 (R$ <span class="f1-val"></span>)</option>
+                        <option value="frete2">Região 2 (R$ <span class="f2-val"></span>)</option>
+                        <option value="frete3">Região 3 (R$ <span class="f3-val"></span>)</option>
+                        <option value="frete4">Região 4 (R$ <span class="f4-val"></span>)</option>
+                    </select>
+                </div>
+
+                <h4>Método de Pagamento</h4>
+                <select id="chk-payment" onchange="CheckoutSys.handlePaymentChange()">
+                    <option value="pix">PIX (Online)</option>
+                    <option value="cartao_online">Cartão de Crédito (Online)</option>
+                    <option value="maquininha">Cartão na Maquininha (Entrega)</option>
+                    <option value="dinheiro">Dinheiro (Entrega)</option>
+                </select>
+                
+                <div id="troco-container" style="display: none; margin-top: 10px;">
+                    <input type="number" id="chk-troco" placeholder="Troco para quanto? (Ex: 50)">
+                </div>
+
+                <div class="cart-summary" style="margin-top: 20px;">
+                    <div class="summary-line"><span>Produtos + Adicionais:</span> <span id="chk-subtotal"></span></div>
+                    <div class="summary-line"><span>Frete:</span> <span id="chk-freight-val">R$ 0,00</span></div>
+                    <div class="summary-line total"><span>Total a Pagar:</span> <span id="chk-final-total"></span></div>
+                </div>
+
+                <button id="btn-submit-order" onclick="CheckoutSys.submitOrder()">Confirmar Pedido</button>
+            </div>
+
+            <div class="checkout-section" id="checkout-status" style="display: none; text-align: center;">
+                <h3>Pedido Enviado!</h3>
+                <p>Código: <strong id="order-code-display"></strong></p>
+                <div class="status-badge" id="order-status-badge">Pendente</div>
+                <p style="font-size: 14px; color: #666; margin: 20px 0;">O estabelecimento já vai confirmar seu pedido. Esta tela será atualizada automaticamente.</p>
+                
+                <button id="btn-whatsapp" class="outline" onclick="CheckoutSys.sendWhatsApp()" style="margin-bottom: 10px;"><i class="fab fa-whatsapp"></i> Confirmar no WhatsApp</button>
+                <button id="btn-confirm-delivery" style="display: none;" onclick="CheckoutSys.confirmDelivery()">Confirmar Entrega</button>
+            </div>
+        </div>
+
+    </main>
+
+    <div id="global-loader" style="display: none;"><div class="spinner"></div></div>
+
+    <script src="auth.js"></script>
+    <script src="menu.js"></script>
+    <script src="product.js"></script>
+    <script src="cart.js"></script>
+    <script src="sell.js"></script>
+    <script src="profile.js"></script>
+    <script src="home.js"></script>
+</body>
+</html>
