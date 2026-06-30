@@ -11,6 +11,11 @@
         window.STORE_NAME = "Ponto Burger";
         window.STORE_LOCAL = "Rua das Flores, 123, Centro, Cidade - UF";
         window.SHIPPING_TYPE = "Todos"; // Delivery, Retirada, Consumir no local
+        
+        // Correção: Espelhando variáveis para que o menu.js consiga ler as informações na Sidebar
+        window.ADDRESS = window.STORE_LOCAL;
+        window.SHIPPING = window.SHIPPING_TYPE;
+
         window.WORKING_TIME = "18:00 às 23:30";
         window.INSTAGRAM = "@pontoburger";
         window.WHATSAPP = "5511999999999";
