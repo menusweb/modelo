@@ -35,7 +35,7 @@ h1, h2, h3, h4, h5, h6, .page-title { color: var(--title); }
     background: var(--bg);
     min-height: 100vh;
     position: relative;
-    padding-top: 60px;
+    padding-top: 75px; /* Aumentado para acomodar o espaçamento extra do cabeçalho */
     padding-bottom: 80px;
     box-shadow: 0 0 20px rgba(0,0,0,0.05);
 }
@@ -45,9 +45,11 @@ h1, h2, h3, h4, h5, h6, .page-title { color: var(--title); }
     position: fixed;
     top: 0; left: 0;
     width: 100%;
-    height: 60px; background: var(--bg);
+    height: 70px; /* Aumentado para acomodar o distanciamento do topo */
+    background: var(--bg);
     display: flex; justify-content: space-between; align-items: center;
-    padding: 0 15px; z-index: 100;
+    padding: 10px 15px 0 15px; /* Padding-top de 10px para desgrudar os itens do topo da tela */
+    z-index: 100;
 }
 #btn-menu {
     background: none; border: none; font-size: 24px; cursor: pointer; color: var(--icons); 
@@ -61,7 +63,7 @@ h1, h2, h3, h4, h5, h6, .page-title { color: var(--title); }
     display: flex; justify-content: center; align-items: center;
 }
 .header-actions { 
-    display: flex; align-items: center; 
+    display: flex; align-items: center; gap: 15px; /* Mantém carrinho e avatar lado a lado separadamente */
 }
 #user-avatar, #sidebar-avatar {
     width: 35px; height: 35px; border-radius: 50%;
@@ -83,7 +85,7 @@ h1, h2, h3, h4, h5, h6, .page-title { color: var(--title); }
 }
 #sidebar-menu.open { left: 0; }
 #close-menu {
-    position: absolute; top: 15px; left: 15px;
+    position: absolute; top: 15px; right: 15px; /* Modificado de left para right */
     background: none; border: none; font-size: 24px; color: var(--menutext); cursor: pointer;
 }
 .sidebar-header { 
@@ -147,7 +149,8 @@ h1, h2, h3, h4, h5, h6, .page-title { color: var(--title); }
 .prod-card-add {
     position: absolute; right: 15px; bottom: 15px;
     width: 30px; height: 30px; border-radius: 50%;
-    background: transparent; border: 1px solid var(--buttonsbg);
+    background-color: var(--cardbg); /* A cor de fundo agora respeita sempre a variável cardbg */
+    border: 1px solid var(--buttonsbg);
     color: var(--buttonsbg); font-size: 18px; display: flex; justify-content: center; align-items: center;
 }
 .prod-card-add i { color: var(--buttonsbg); }
@@ -230,7 +233,7 @@ button.outline-sm { background: transparent; border: 1px solid var(--buttonsbg);
 /* Desktop overrides */
 @media (min-width: 768px) {
     #app-container { max-width: 1200px; padding-left: 20px; padding-right: 20px; }
-    #main-header { max-width: 1200px; left: 50%; transform: translateX(-50%); padding: 0 30px; }
+    #main-header { max-width: 1200px; left: 50%; transform: translateX(-50%); padding: 10px 30px 0; } /* Ajustado com o novo padding-top */
     .fixed-bottom-bar { max-width: 1200px; left: 50%; transform: translateX(-50%); flex-direction: row; justify-content: center; gap: 20px; }
     .fixed-bottom-bar button { width: auto; min-width: 250px; }
     #home-category-bar { justify-content: center; flex-wrap: wrap; overflow-x: visible; }
