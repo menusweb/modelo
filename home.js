@@ -16,11 +16,8 @@ const HomeSys = {
                 if (colors) {
                     const root = document.documentElement;
                     if (colors.bg) root.style.setProperty('--bg', colors.bg);
-                    if (colors.texttitle) {
-                        root.style.setProperty('--texttitle', colors.texttitle);
-                        // Aplicar fallback para elementos que possam ter sido sobrescritos pelo seletor universal *
-                        root.style.setProperty('--main-text-color', colors.texttitle);
-                    }
+                    if (colors.text) root.style.setProperty('--text', colors.text);
+                    if (colors.title) root.style.setProperty('--title', colors.title);
                     if (colors.menubg) root.style.setProperty('--menubg', colors.menubg);
                     if (colors.menutext) root.style.setProperty('--menutext', colors.menutext);
                     if (colors.menutitle) root.style.setProperty('--menutitle', colors.menutitle);
@@ -96,7 +93,7 @@ const HomeSys = {
         grid.innerHTML = '';
         
         if (list.length === 0) {
-            grid.innerHTML = '<p style="text-align:center; padding: 20px; opacity:0.6; color: var(--texttitle);">Nenhum produto encontrado.</p>';
+            grid.innerHTML = '<p style="text-align:center; padding: 20px; opacity:0.6; color: var(--text);">Nenhum produto encontrado.</p>';
             return;
         }
 
