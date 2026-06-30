@@ -102,24 +102,24 @@ const AuthSystem = {
     modal.style = "position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);display:flex;justify-content:center;align-items:center;z-index:9999;";
 
     const container = document.createElement("div");
-    container.style = "background:#fff;padding:25px;border-radius:8px;max-width:400px;width:90%;text-align:center;box-shadow:0 4px 12px rgba(0,0,0,0.15);";
+    container.style = "background:var(--cardbg, #fff);padding:25px;border-radius:8px;max-width:400px;width:90%;text-align:center;box-shadow:0 4px 12px rgba(0,0,0,0.15);";
 
     const title = document.createElement("h3");
     title.textContent = "Identificação necessária";
-    title.style = "margin-top:0;margin-bottom:20px;font-family:sans-serif;color:#333;";
+    title.style = "margin-top:0;margin-bottom:20px;font-family:sans-serif;color:var(--texttitle, #333);";
     container.appendChild(title);
 
     const btnLogin = document.createElement("button");
     btnLogin.textContent = "Entrar ou Registrar-se";
-    btnLogin.style = "width:100%;padding:12px;margin-bottom:10px;background:#007bff;color:#fff;border:none;border-radius:4px;cursor:pointer;font-weight:bold;";
+    btnLogin.style = "width:100%;padding:12px;margin-bottom:10px;background:var(--buttonsbg, #007bff);color:var(--buttonstext, #fff);border:none;border-radius:4px;cursor:pointer;font-weight:bold;";
 
     const btnGuest = document.createElement("button");
     btnGuest.textContent = "Continuar sem login";
-    btnGuest.style = "width:100%;padding:12px;background:#6c757d;color:#fff;border:none;border-radius:4px;cursor:pointer;font-weight:bold;";
+    btnGuest.style = "width:100%;padding:12px;background:var(--buttonsbg, #6c757d);color:var(--buttonstext, #fff);border:none;border-radius:4px;cursor:pointer;font-weight:bold;";
 
     const btnCancel = document.createElement("button");
     btnCancel.textContent = "Cancelar Pedido";
-    btnCancel.style = "width:100%;padding:12px;margin-top:10px;background:#ccc;color:#333;border:none;border-radius:4px;cursor:pointer;font-weight:bold;";
+    btnCancel.style = "width:100%;padding:12px;margin-top:10px;background:var(--cardbg, #ccc);color:var(--cardtext, #333);border:none;border-radius:4px;cursor:pointer;font-weight:bold;";
 
     container.appendChild(btnLogin);
     container.appendChild(btnGuest);
@@ -148,13 +148,13 @@ const AuthSystem = {
     modal.style = "position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);display:flex;justify-content:center;align-items:center;z-index:9999;";
 
     const container = document.createElement("div");
-    container.style = "background:#fff;padding:25px;border-radius:8px;max-width:360px;width:90%;box-shadow:0 4px 12px rgba(0,0,0,0.15);font-family:sans-serif;";
+    container.style = "background:var(--cardbg, #fff);padding:25px;border-radius:8px;max-width:360px;width:90%;box-shadow:0 4px 12px rgba(0,0,0,0.15);font-family:sans-serif;color:var(--cardtext, #000);";
 
     // Definimos os botões baseados em estarmos no fluxo de checkout ou não
     const btnCancelText = onProceedWithCheckout ? "Voltar ao Carrinho" : "Fechar";
 
     container.innerHTML = `
-      <h3 style="margin-top:0;text-align:center;">Entrar na Conta</h3>
+      <h3 style="margin-top:0;text-align:center;color:var(--cardtitle, #000);">Entrar na Conta</h3>
       <div style="margin-bottom:12px;">
         <label style="display:block;margin-bottom:4px;font-size:14px;">Usuário</label>
         <input type="text" id="login-user" style="width:100%;padding:8px;box-sizing:border-box;">
@@ -165,15 +165,15 @@ const AuthSystem = {
       </div>
       <div id="login-err" style="color:red;font-size:13px;margin-bottom:10px;display:none;"></div>
       
-      <button id="btn-do-login" style="width:100%;padding:10px;background:#007bff;color:#fff;border:none;border-radius:4px;cursor:pointer;font-weight:bold;margin-bottom:15px;">Entrar</button>
+      <button id="btn-do-login" style="width:100%;padding:10px;background:var(--buttonsbg, #007bff);color:var(--buttonstext, #fff);border:none;border-radius:4px;cursor:pointer;font-weight:bold;margin-bottom:15px;">Entrar</button>
       
       <div style="border-top: 1px solid #ddd; margin: 15px 0; position: relative;">
-        <span style="position: absolute; top: -10px; left: 50%; transform: translateX(-50%); background: #fff; padding: 0 10px; font-size: 13px; color: #666;">Novo por aqui?</span>
+        <span style="position: absolute; top: -10px; left: 50%; transform: translateX(-50%); background: var(--cardbg, #fff); padding: 0 10px; font-size: 13px; color: var(--cardtext, #666);">Novo por aqui?</span>
       </div>
       
-      <button id="btn-go-register" style="width:100%;padding:10px;background:#28a745;color:#fff;border:none;border-radius:4px;cursor:pointer;font-weight:bold;">Criar Conta</button>
+      <button id="btn-go-register" style="width:100%;padding:10px;background:var(--buttonsbg, #28a745);color:var(--buttonstext, #fff);border:none;border-radius:4px;cursor:pointer;font-weight:bold;">Criar Conta</button>
       
-      <button id="btn-cancel-login" style="width:100%;padding:10px;background:#ccc;color:#333;border:none;border-radius:4px;cursor:pointer;margin-top:15px;">${btnCancelText}</button>
+      <button id="btn-cancel-login" style="width:100%;padding:10px;background:var(--cardbg, #ccc);color:var(--cardtext, #333);border:none;border-radius:4px;cursor:pointer;margin-top:15px;">${btnCancelText}</button>
     `;
 
     modal.appendChild(container);
@@ -246,10 +246,10 @@ const AuthSystem = {
     modal.style = "position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);display:flex;justify-content:center;align-items:center;z-index:9999;overflow-y:auto;";
 
     const container = document.createElement("div");
-    container.style = "background:#fff;padding:25px;border-radius:8px;max-width:450px;width:90%;margin:20px auto;max-height:90vh;overflow-y:auto;box-shadow:0 4px 12px rgba(0,0,0,0.15);font-family:sans-serif;";
+    container.style = "background:var(--cardbg, #fff);padding:25px;border-radius:8px;max-width:450px;width:90%;margin:20px auto;max-height:90vh;overflow-y:auto;box-shadow:0 4px 12px rgba(0,0,0,0.15);font-family:sans-serif;color:var(--cardtext, #000);";
 
     container.innerHTML = `
-      <h3 style="margin-top:0;text-align:center;">Criar Conta</h3>
+      <h3 style="margin-top:0;text-align:center;color:var(--cardtitle, #000);">Criar Conta</h3>
       <div style="margin-bottom:10px;"><label style="font-size:13px;display:block;">Nome de Usuário</label><input type="text" id="reg-user" style="width:100%;padding:6px;box-sizing:border-box;"></div>
       <div style="margin-bottom:10px;"><label style="font-size:13px;display:block;">WhatsApp</label><input type="text" id="reg-whatsapp" style="width:100%;padding:6px;box-sizing:border-box;" placeholder="(11) 90000-0000"></div>
       <div style="margin-bottom:10px;"><label style="font-size:13px;display:block;">E-mail</label><input type="email" id="reg-email" style="width:100%;padding:6px;box-sizing:border-box;"></div>
@@ -267,8 +267,8 @@ const AuthSystem = {
       
       <div id="reg-err" style="color:red;font-size:13px;margin-bottom:10px;display:none;"></div>
       
-      <button id="btn-do-register" style="width:100%;padding:10px;background:#28a745;color:#fff;border:none;border-radius:4px;cursor:pointer;font-weight:bold;">Confirmar Cadastro</button>
-      <button id="btn-cancel-reg" style="width:100%;padding:10px;background:#ccc;color:#333;border:none;border-radius:4px;cursor:pointer;margin-top:8px;">Voltar ao Login</button>
+      <button id="btn-do-register" style="width:100%;padding:10px;background:var(--buttonsbg, #28a745);color:var(--buttonstext, #fff);border:none;border-radius:4px;cursor:pointer;font-weight:bold;">Confirmar Cadastro</button>
+      <button id="btn-cancel-reg" style="width:100%;padding:10px;background:var(--cardbg, #ccc);color:var(--cardtext, #333);border:none;border-radius:4px;cursor:pointer;margin-top:8px;">Voltar ao Login</button>
     `;
 
     modal.appendChild(container);
@@ -367,7 +367,6 @@ const AuthSystem = {
     this.checkLoginCache();
   }
 };
-
 document.addEventListener("DOMContentLoaded", () => {
   AuthSystem.init();
 });
