@@ -1,7 +1,8 @@
 :root {
     /* Variáveis base - serão sobrescritas pelo JS */
     --bg: #F9F9F9;
-    --texttitle: #E64A19;
+    --text: #333333;
+    --title: #E64A19;
     --menubg: #FFF3E0;
     --menutext: #333333;
     --menutitle: #E64A19;
@@ -21,11 +22,11 @@
     --font: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0; font-family: var(--font); color: var(--texttitle); }
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: var(--font); }
 
-body { background-color: var(--bg); overflow-x: hidden; }
+body { background-color: var(--bg); color: var(--text); overflow-x: hidden; }
 
-h1, h2, h3, h4, h5, h6, .page-title { color: var(--texttitle); }
+h1, h2, h3, h4, h5, h6, .page-title { color: var(--title); }
 
 /* LAYOUT MOBILE-FIRST */
 #app-container {
@@ -122,9 +123,9 @@ h1, h2, h3, h4, h5, h6, .page-title { color: var(--texttitle); }
     display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
     text-align: center; margin-bottom: 25px; 
 }
-.home-hero img { width: 120px; height: 120px; border-radius: 50%; box-shadow: 0 4px 10px rgba(0,0,0,0.1); border: 2px solid var(--texttitle);}
-.home-hero h1 { margin-top: 15px; font-size: 26px; color: var(--texttitle); }
-.home-hero p { font-size: 14px; opacity: 0.8; margin-top: 5px; color: var(--texttitle); }
+.home-hero img { width: 120px; height: 120px; border-radius: 50%; box-shadow: 0 4px 10px rgba(0,0,0,0.1); border: 2px solid var(--title);}
+.home-hero h1 { margin-top: 15px; font-size: 26px; color: var(--title); }
+.home-hero p { font-size: 14px; opacity: 0.8; margin-top: 5px; color: var(--text); }
 #home-category-bar {
     display: flex; overflow-x: auto; padding-bottom: 15px; margin-bottom: 20px;
     scrollbar-width: none;
@@ -132,7 +133,7 @@ h1, h2, h3, h4, h5, h6, .page-title { color: var(--texttitle); }
 #home-category-bar::-webkit-scrollbar { display: none; }
 .cat-pill {
     flex: 0 0 auto; display: flex; flex-direction: column; align-items: center;
-    margin-right: 15px; cursor: pointer; opacity: 0.6; transition: 0.2s; color: var(--texttitle);
+    margin-right: 15px; cursor: pointer; opacity: 0.6; transition: 0.2s; color: var(--text);
 }
 .cat-pill.active { opacity: 1; border-bottom: 2px solid var(--categoriesselected); padding-bottom: 5px; color: var(--categoriesselected); }
 .cat-pill i { font-size: 24px; color: var(--categoriesicons); margin-bottom: 8px; }
@@ -159,14 +160,14 @@ h1, h2, h3, h4, h5, h6, .page-title { color: var(--texttitle); }
 
 /* PRODUCT & CART PAGES */
 .back-btn { background: none; border: none; font-size: 20px; color: var(--icons); margin-bottom: 15px; cursor: pointer; }
-.page-title { margin-bottom: 20px; font-size: 22px; color: var(--texttitle); }
+.page-title { margin-bottom: 20px; font-size: 22px; color: var(--title); }
 #prod-img-container img { width: 100%; height: 250px; border-radius: var(--radius); object-fit: cover; margin-bottom: 15px; }
-.prod-details h2 { font-size: 24px; margin-bottom: 5px; color: var(--texttitle); }
-.prod-details h3 { font-size: 20px; color: var(--texttitle); margin-bottom: 10px; }
-.prod-details p { font-size: 14px; opacity: 0.8; line-height: 1.5; margin-bottom: 20px; color: var(--texttitle); }
+.prod-details h2 { font-size: 24px; margin-bottom: 5px; color: var(--title); }
+.prod-details h3 { font-size: 20px; color: var(--title); margin-bottom: 10px; }
+.prod-details p { font-size: 14px; opacity: 0.8; line-height: 1.5; margin-bottom: 20px; color: var(--text); }
 
 .prod-section { margin-bottom: 25px; }
-.prod-section h4 { font-size: 16px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; color: var(--texttitle); }
+.prod-section h4 { font-size: 16px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; color: var(--title); }
 .prod-section h4 span.limit { font-size: 12px; background: var(--buttonsbg); color: var(--buttonstext); padding: 2px 8px; border-radius: 10px; }
 .ingr-grid { display: flex; flex-wrap: wrap; gap: 8px; }
 .ingr-btn {
@@ -184,10 +185,10 @@ h1, h2, h3, h4, h5, h6, .page-title { color: var(--texttitle); }
 .qty-control { display: inline-flex; align-items: center; border: 1px solid var(--buttonsbg); border-radius: 20px; padding: 5px 15px; }
 .qty-control button { background: none; border: none; color: var(--buttonsbg); font-size: 16px; cursor: pointer; padding: 0 10px; }
 .qty-control button i { color: var(--buttonsbg); }
-.qty-control span { font-weight: bold; margin: 0 15px; font-size: 16px; color: var(--texttitle); }
+.qty-control span { font-weight: bold; margin: 0 15px; font-size: 16px; color: var(--text); }
 
 textarea { width: 100%; height: 80px; padding: 10px; border-radius: 8px; border: 1px solid #ddd; resize: none; font-size: 14px; background: #fff; color: #333; }
-.char-count { text-align: right; font-size: 12px; opacity: 0.6; margin-top: 5px; color: var(--texttitle); }
+.char-count { text-align: right; font-size: 12px; opacity: 0.6; margin-top: 5px; color: var(--text); }
 
 .fixed-bottom-bar {
     position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
@@ -215,12 +216,12 @@ button.outline-sm { background: transparent; border: 1px solid var(--buttonsbg);
 .del-btn i { color: #dc3545; }
 
 .cart-summary { background: #fff; padding: 15px; border-radius: var(--radius); margin-top: 20px; border: 1px solid #eee; }
-.summary-line { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 14px; color: #333; }
-.summary-line.total { font-weight: bold; font-size: 18px; border-top: 1px solid #eee; padding-top: 10px; margin-top: 5px; color: var(--texttitle); }
+.summary-line { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 14px; color: var(--text); }
+.summary-line.total { font-weight: bold; font-size: 18px; border-top: 1px solid #eee; padding-top: 10px; margin-top: 5px; color: var(--title); }
 
 /* CHECKOUT */
 .checkout-section { background: #fff; padding: 15px; border-radius: var(--radius); margin-bottom: 15px; border: 1px solid #eee; }
-.checkout-section h4 { margin-bottom: 10px; font-size: 15px; color: var(--texttitle); }
+.checkout-section h4 { margin-bottom: 10px; font-size: 15px; color: var(--title); }
 .checkout-section input[type="text"], .checkout-section input[type="number"], .checkout-section select {
     width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 10px; font-size: 14px; background: #fafafa; color: #333;
 }
