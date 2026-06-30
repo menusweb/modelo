@@ -7,23 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
     <script>
-        // Carrega configurações da planilha ao iniciar
-        async function loadStoreConfig() {
-            const response = await fetch("URL_DO_SEU_WEB_APP_GAS?action=getStoreConfig");
-            const result = await response.json();
-            if (result.success) {
-                const config = result.data;
-                const root = document.documentElement;
-                root.style.setProperty('--mainColor', config.mainColor);
-                root.style.setProperty('--textColor', config.textColor);
-                root.style.setProperty('--bgcolor', config.bgcolor);
-                root.style.setProperty('--menubg', config.menubg);
-                root.style.setProperty('--iconColors', config.iconColors);
-            }
-        }
-        loadStoreConfig();
-
-        // Constantes de Configuração da Loja
+        // Constantes de Configuração da Loja (Valores Estáticos)
         window.STORE_NAME = "Ponto Burger";
         window.STORE_LOCAL = "Rua das Flores, 123, Centro, Cidade - UF";
         window.SHIPPING_TYPE = "Todos"; // Delivery, Retirada, Consumir no local
