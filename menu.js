@@ -49,7 +49,7 @@ const MenuConfig = {
             if (container) {
                 container.innerHTML += `
                     <div class="cat-item" onclick="HomeSys.filterCategory('${cat}'); MenuConfig.toggle();">
-                        <i class="fas ${icon}"></i> ${cat}
+                        <i class="fas ${icon}" style="color: var(--categoriesicons);"></i> <span style="color: var(--menutext);">${cat}</span>
                     </div>`;
             }
             if (bar) {
