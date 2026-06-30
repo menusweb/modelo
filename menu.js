@@ -68,24 +68,25 @@ const MenuConfig = {
         setTxt('sidebar-storename', window.STORE_NAME);
         setTxt('home-storename', window.STORE_NAME);
 
-        // Process Address
-        let addr = window.ADDRESS || '';
+        // Process Address com fallback de segurança
+        let addr = window.ADDRESS || window.address || '';
         if (addr.includes(',')) {
             const p = addr.split(',').map(s => s.trim());
             if (p.length >= 5) addr = `${p[0]}, ${p[1]}, ${p[2]}, ${p[3]} - ${p[4]}`;
         }
         setTxt('info-local', addr);
 
-        // Process Shipping
-        let ship = window.SHIPPING || '';
+        // Process Shipping com fallback de segurança
+        let ship = window.SHIPPING || window.shipping || '';
         if (ship) {
             ship = ship.split(',').map(s => '- ' + s.trim()).join('\n');
         }
         setInner('info-shipping', ship);
 
-        setTxt('info-time', window.WORKING_TIME);
-        setTxt('info-insta', window.INSTAGRAM);
-        setTxt('info-whats', window.WHATSAPP);
+        // Renderização das informações adicionais com tratamento de variáveis alternativas
+        setTxt('info-time', window.WORKING_TIME || window.workingtime);
+        setTxt('info-insta', window.INSTAGRAM || window.insta);
+        setTxt('info-whats', window.WHATSAPP || window.zap);
     },
 
     applyStyles(config) {
