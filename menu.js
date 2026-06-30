@@ -63,10 +63,26 @@ const MenuConfig = {
 
     setStoreInfo() {
         const setTxt = (id, txt) => { const el = document.getElementById(id); if (el) el.textContent = txt || ''; };
+        const setInner = (id, txt) => { const el = document.getElementById(id); if (el) el.innerText = txt || ''; };
+
         setTxt('sidebar-storename', window.STORE_NAME);
         setTxt('home-storename', window.STORE_NAME);
-        setTxt('info-local', window.STORE_LOCAL);
-        setTxt('info-shipping', window.SHIPPING_TYPE);
+
+        // Process Address
+        let addr = window.ADDRESS || '';
+        if (addr.includes(',')) {
+            const p = addr.split(',').map(s => s.trim());
+            if (p.length >= 5) addr = `${p[0]}, ${p[1]}, ${p[2]}, ${p[3]} - ${p[4]}`;
+        }
+        setTxt('info-local', addr);
+
+        // Process Shipping
+        let ship = window.SHIPPING || '';
+        if (ship) {
+            ship = ship.split(',').map(s => '- ' + s.trim()).join('\n');
+        }
+        setInner('info-shipping', ship);
+
         setTxt('info-time', window.WORKING_TIME);
         setTxt('info-insta', window.INSTAGRAM);
         setTxt('info-whats', window.WHATSAPP);
