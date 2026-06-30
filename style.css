@@ -47,13 +47,27 @@ h1, h2, h3, h4, h5, h6, .page-title { color: var(--title); }
     width: 100%;
     height: 70px; /* Aumentado para acomodar o distanciamento do topo */
     background: var(--bg);
-    display: flex; justify-content: space-between; align-items: center;
+    
+    /* Correção: Usando CSS Grid para forçar o alinhamento das pontas */
+    display: grid; 
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    
     padding: 10px 15px 0 15px; /* Padding-top de 10px para desgrudar os itens do topo da tela */
     z-index: 100;
 }
 #btn-menu {
     background: none; border: none; font-size: 24px; cursor: pointer; color: var(--icons); 
+    justify-self: start; /* Fixa o botão à esquerda absoluta da primeira coluna */
 }
+#header-brand {
+    justify-self: center;
+}
+.header-actions { 
+    display: flex; align-items: center; gap: 15px; /* Mantém carrinho e avatar lado a lado separadamente */
+    justify-self: end; /* Fixa os ícones à direita absoluta da terceira coluna */
+}
+
 #btn-cart { background: none; border: none; font-size: 24px; cursor: pointer; color: var(--icons); position: relative; }
 #cart-badge {
     position: absolute; top: -5px; right: -10px;
@@ -61,9 +75,6 @@ h1, h2, h3, h4, h5, h6, .page-title { color: var(--title); }
     font-size: 12px; font-weight: bold;
     border-radius: 50%; width: 20px; height: 20px;
     display: flex; justify-content: center; align-items: center;
-}
-.header-actions { 
-    display: flex; align-items: center; gap: 15px; /* Mantém carrinho e avatar lado a lado separadamente */
 }
 #user-avatar, #sidebar-avatar {
     width: 35px; height: 35px; border-radius: 50%;
