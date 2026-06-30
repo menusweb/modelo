@@ -16,7 +16,11 @@ const HomeSys = {
                 if (colors) {
                     const root = document.documentElement;
                     if (colors.bg) root.style.setProperty('--bg', colors.bg);
-                    if (colors.texttitle) root.style.setProperty('--texttitle', colors.texttitle);
+                    if (colors.texttitle) {
+                        root.style.setProperty('--texttitle', colors.texttitle);
+                        // Aplicar fallback para elementos que possam ter sido sobrescritos pelo seletor universal *
+                        root.style.setProperty('--main-text-color', colors.texttitle);
+                    }
                     if (colors.menubg) root.style.setProperty('--menubg', colors.menubg);
                     if (colors.menutext) root.style.setProperty('--menutext', colors.menutext);
                     if (colors.menutitle) root.style.setProperty('--menutitle', colors.menutitle);
@@ -72,6 +76,15 @@ const HomeSys = {
     filterCategory(catName) {
         document.querySelectorAll('.cat-pill').forEach(el => {
             el.classList.toggle('active', el.dataset.cat === catName);
+            // Atualizar cor do ícone no pill ativo/inativo
+            const icon = el.querySelector('i');
+            if (icon) {
+                if (el.dataset.cat === catName) {
+                    icon.style.color = 'var(--categoriesselected)';
+                } else {
+                    icon.style.color = 'var(--categoriesicons)';
+                }
+            }
         });
         
         const filtered = this.menuData.filter(p => p.category.toLowerCase() === catName.toLowerCase());
@@ -83,7 +96,7 @@ const HomeSys = {
         grid.innerHTML = '';
         
         if (list.length === 0) {
-            grid.innerHTML = '<p style="text-align:center; padding: 20px; opacity:0.6;">Nenhum produto encontrado.</p>';
+            grid.innerHTML = '<p style="text-align:center; padding: 20px; opacity:0.6; color: var(--texttitle);">Nenhum produto encontrado.</p>';
             return;
         }
 
