@@ -8,9 +8,28 @@ const HomeSys = {
             // Fetch Config
             const confRes = await fetch(`${window.API_URL}?action=getStoreConfig`);
             const confJson = await confRes.json();
+            
+            let colorsData = confJson.data;
+            
             if (confJson.success && confJson.data) {
+                // Verifica se a aba colors foi incluída no objeto principal
+                if (confJson.data.colors) {
+                    colorsData = confJson.data.colors;
+                } else {
+                    // Caso tenha sido criada uma action separada para as cores
+                    try {
+                        const colorsRes = await fetch(`${window.API_URL}?action=getColors`);
+                        const colorsJson = await colorsRes.json();
+                        if (colorsJson.success && colorsJson.data) {
+                            colorsData = colorsJson.data;
+                        }
+                    } catch (err) {
+                        console.error("Erro ao carregar cores separadamente", err);
+                    }
+                }
+
                 window.StoreConfig = confJson.data;
-                MenuConfig.applyStyles(confJson.data);
+                MenuConfig.applyStyles(colorsData);
                 MenuConfig.renderCategories(confJson.data.categories);
             }
             MenuConfig.setStoreInfo();
