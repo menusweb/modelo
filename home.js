@@ -8,31 +8,42 @@ const HomeSys = {
             // Fetch Config
             const confRes = await fetch(`${window.API_URL}?action=getStoreConfig`);
             const confJson = await confRes.json();
-            
-            let colorsData = confJson.data;
-            
             if (confJson.success && confJson.data) {
-                // Verifica se a aba colors foi incluída no objeto principal
-                if (confJson.data.colors) {
-                    colorsData = confJson.data.colors;
-                } else {
-                    // Caso tenha sido criada uma action separada para as cores
-                    try {
-                        const colorsRes = await fetch(`${window.API_URL}?action=getColors`);
-                        const colorsJson = await colorsRes.json();
-                        if (colorsJson.success && colorsJson.data) {
-                            colorsData = colorsJson.data;
-                        }
-                    } catch (err) {
-                        console.error("Erro ao carregar cores separadamente", err);
-                    }
+                window.StoreConfig = confJson.data;
+                
+                // Mapeia e injeta as variáveis de cores no CSS baseadas na nova aba "colors"
+                const colors = confJson.data.colors || confJson.data;
+                if (colors) {
+                    const root = document.documentElement;
+                    if (colors.bg) root.style.setProperty('--bg', colors.bg);
+                    if (colors.texttitle) root.style.setProperty('--texttitle', colors.texttitle);
+                    if (colors.menubg) root.style.setProperty('--menubg', colors.menubg);
+                    if (colors.menutext) root.style.setProperty('--menutext', colors.menutext);
+                    if (colors.menutitle) root.style.setProperty('--menutitle', colors.menutitle);
+                    if (colors.cardbg) root.style.setProperty('--cardbg', colors.cardbg);
+                    if (colors.cardtext) root.style.setProperty('--cardtext', colors.cardtext);
+                    if (colors.cardtitle) root.style.setProperty('--cardtitle', colors.cardtitle);
+                    if (colors.icons) root.style.setProperty('--icons', colors.icons);
+                    if (colors.categoriesicons) root.style.setProperty('--categoriesicons', colors.categoriesicons);
+                    if (colors.categoriesselected) root.style.setProperty('--categoriesselected', colors.categoriesselected);
+                    if (colors.cartbg) root.style.setProperty('--cartbg', colors.cartbg);
+                    if (colors.carttext) root.style.setProperty('--carttext', colors.carttext);
+                    if (colors.carttitle) root.style.setProperty('--carttitle', colors.carttitle);
+                    if (colors.buttonsbg) root.style.setProperty('--buttonsbg', colors.buttonsbg);
+                    if (colors.buttonstext) root.style.setProperty('--buttonstext', colors.buttonstext);
                 }
 
-                window.StoreConfig = confJson.data;
-                MenuConfig.applyStyles(colorsData);
-                MenuConfig.renderCategories(confJson.data.categories);
+                if (typeof MenuConfig !== 'undefined') {
+                    MenuConfig.applyStyles(confJson.data);
+                    
+                    // Ajuste para garantir que categories será lido quer venha de confJson.data.categories ou confJson.data.mystore.categories
+                    const categoriesData = confJson.data.categories || (confJson.data.mystore ? confJson.data.mystore.categories : []);
+                    MenuConfig.renderCategories(categoriesData);
+                }
             }
-            MenuConfig.setStoreInfo();
+            if (typeof MenuConfig !== 'undefined') {
+                MenuConfig.setStoreInfo();
+            }
 
             // Fetch Menu
             const menuRes = await fetch(`${window.API_URL}?action=getMenu`);
