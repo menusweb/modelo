@@ -22,6 +22,8 @@ const MenuConfig = {
     toggle() {
         const menu = document.getElementById('sidebar-menu');
         const overlay = document.getElementById('sidebar-overlay');
+        if (!menu || !overlay) return;
+
         const isOpen = menu.classList.contains('open');
         if (isOpen) {
             menu.classList.remove('open');
@@ -39,32 +41,35 @@ const MenuConfig = {
         
         const container = document.getElementById('sidebar-categories');
         const bar = document.getElementById('home-category-bar');
-        container.innerHTML = ''; bar.innerHTML = '';
+        if (container) container.innerHTML = ''; 
+        if (bar) bar.innerHTML = '';
         
         cats.forEach((cat, idx) => {
             const icon = this.getIcon(cat);
-            // Sidebar item
-            container.innerHTML += `
-                <div class="cat-item" onclick="HomeSys.filterCategory('${cat}'); MenuConfig.toggle();">
-                    <i class="fas ${icon}"></i> ${cat}
-                </div>`;
-            // Home pill
-            bar.innerHTML += `
-                <div class="cat-pill ${idx === 0 ? 'active' : ''}" data-cat="${cat}" onclick="HomeSys.filterCategory('${cat}')">
-                    <i class="fas ${icon}"></i> <span>${cat}</span>
-                </div>`;
+            if (container) {
+                container.innerHTML += `
+                    <div class="cat-item" onclick="HomeSys.filterCategory('${cat}'); MenuConfig.toggle();">
+                        <i class="fas ${icon}"></i> ${cat}
+                    </div>`;
+            }
+            if (bar) {
+                bar.innerHTML += `
+                    <div class="cat-pill ${idx === 0 ? 'active' : ''}" data-cat="${cat}" onclick="HomeSys.filterCategory('${cat}')">
+                        <i class="fas ${icon}"></i> <span>${cat}</span>
+                    </div>`;
+            }
         });
     },
 
     setStoreInfo() {
-        document.getElementById('sidebar-storename').textContent = window.STORE_NAME;
-        document.getElementById('home-storename').textContent = window.STORE_NAME;
-        
-        document.getElementById('info-local').textContent = window.STORE_LOCAL;
-        document.getElementById('info-shipping').textContent = window.SHIPPING_TYPE;
-        document.getElementById('info-time').textContent = window.WORKING_TIME;
-        document.getElementById('info-insta').textContent = window.INSTAGRAM;
-        document.getElementById('info-whats').textContent = window.WHATSAPP;
+        const setTxt = (id, txt) => { const el = document.getElementById(id); if (el) el.textContent = txt || ''; };
+        setTxt('sidebar-storename', window.STORE_NAME);
+        setTxt('home-storename', window.STORE_NAME);
+        setTxt('info-local', window.STORE_LOCAL);
+        setTxt('info-shipping', window.SHIPPING_TYPE);
+        setTxt('info-time', window.WORKING_TIME);
+        setTxt('info-insta', window.INSTAGRAM);
+        setTxt('info-whats', window.WHATSAPP);
     },
 
     applyStyles(config) {
@@ -76,11 +81,15 @@ const MenuConfig = {
         if(config.iconColors) root.style.setProperty('--iconColors', config.iconColors);
         
         const logoUrl = config.profilePic || 'https://via.placeholder.com/150';
-        document.getElementById('sidebar-logo').src = logoUrl;
-        document.getElementById('home-logo').src = logoUrl;
+        const elSidebarLogo = document.getElementById('sidebar-logo');
+        const elHomeLogo = document.getElementById('home-logo');
+        if (elSidebarLogo) elSidebarLogo.src = logoUrl;
+        if (elHomeLogo) elHomeLogo.src = logoUrl;
         
-        const slog = config.slogan || window.STORE_NAME;
-        document.getElementById('sidebar-slogan').textContent = slog;
-        document.getElementById('home-slogan').textContent = slog;
+        const slog = config.slogan || window.STORE_NAME || '';
+        const elSidebarSlogan = document.getElementById('sidebar-slogan');
+        const elHomeSlogan = document.getElementById('home-slogan');
+        if (elSidebarSlogan) elSidebarSlogan.textContent = slog;
+        if (elHomeSlogan) elHomeSlogan.textContent = slog;
     }
 };
