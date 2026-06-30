@@ -110,9 +110,6 @@ const HomeSys = {
                         <div class="prod-card-desc">${item.ingredients ? item.ingredients.replace(/[\[\]]/g, '') : ''}</div>
                         <div class="prod-card-price">R$ ${price}</div>
                     </div>
-                    <button class="prod-card-add" onclick="event.stopPropagation(); ProductSys.openProduct('${itemString}')">
-                        <i class="fas fa-plus"></i>
-                    </button>
                 </div>
             `;
         });
